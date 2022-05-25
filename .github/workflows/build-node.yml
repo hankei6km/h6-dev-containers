@@ -5,11 +5,12 @@ on:
     types: [deploy_push]
 
 jobs:
+
   build_node:
     name: Build image(node)
     runs-on: ubuntu-latest
 
-    setps:
+    steps:
       - name: Check out the repo
         uses: actions/checkout@v2
 
@@ -17,9 +18,9 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Prepare tags for image
-        id: prep_prod
+        id: prep
         run: |
-          TAG1="ghcr.io/${GITHUB_REPOSITORY}:$(date "+%Y-%m")-$(echo ${GITHUB_REF} | sed -e 's/refs\/heads\///; s/\//-/g')-node"
+          TAG1="ghcr.io/${GITHUB_REPOSITORY}:$(date "+%Y-%m")-$(echo "${GITHUB_REF}" | sed -e 's/refs\/heads\///; s/\//-/g')-node"
           TAG2="ghcr.io/${GITHUB_REPOSITORY}:node"
           TAGS="${TAG1}%0A${TAG2}"
           echo "::set-output name=tags::${TAGS}"
