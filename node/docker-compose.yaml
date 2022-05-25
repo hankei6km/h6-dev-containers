@@ -1,0 +1,15 @@
+version: '3'
+services:
+  vscode-remote-node:
+    image: vscode-remote-webapp:latest
+    hostname: remote-node
+    tty: true
+    user: node
+    command: [bash]
+    # cap_add:
+    #  - SYS_PTRACE
+    environment:
+      # - TZ=JST-9
+      # - LANG=C.UTF-8
+      # - LC_CTYPE=C.UTF-8
+    volumes:
