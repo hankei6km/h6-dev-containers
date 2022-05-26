@@ -37,10 +37,10 @@ jobs:
             || TAGS="${TAG1}"
           echo "::set-output name=tags::${TAGS}"
         env:
-          TAGs: ${{ steps.prep.outputs.tag1 }}
+          TAG1: ${{ steps.prep.outputs.tag1 }}
 
       - name: Push Image(basic) to GitHub Container Registry
-        id: push_image
+        id: push_image_basic
         uses: docker/build-push-action@v3
         with:
           context: ./basic
@@ -59,10 +59,10 @@ jobs:
             || TAGS="${TAG1}"
           echo "::set-output name=tags::${TAGS}"
         env:
-          TAGs: ${{ steps.prep.outputs.tag1 }}
+          TAG1: ${{ steps.prep.outputs.tag1 }}
 
       - name: Push Image(dind) to GitHub Container Registry
-        id: push_image
+        id: push_image_dind
         uses: docker/build-push-action@v3
         with:
           context: ./dind
