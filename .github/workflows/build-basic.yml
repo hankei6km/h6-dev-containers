@@ -66,7 +66,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./dind
-           build-args: |
+          build-args: |
             BASIC_IMAGE=${{ steps.push_image_basic.outputs.digest}}
           push: true
           tags: ${{ steps.prep_dind.outputs.tags }}
