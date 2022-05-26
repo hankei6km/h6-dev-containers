@@ -1,4 +1,5 @@
-FROM ghcr.io/hankei6km/my-images-codespaces:basic
+ARG BASIC_IMAGE=ghcr.io/hankei6km/my-images-codespaces:basic
+FROM ${BASIC_IMAGE}
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
