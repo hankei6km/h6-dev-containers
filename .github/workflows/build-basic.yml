@@ -25,19 +25,20 @@ jobs:
       - name: Prepare tags for image
         id: prep
         run: |
-          TAG1="ghcr.io/${GITHUB_REPOSITORY}:$(date "+%Y-%m")-$(echo "${GITHUB_REF}" | sed -e 's/refs\/heads\///; s/\//-/g')-basic"
-          echo "::set-output name=tag1::${TAG1}"
+          TAG_DATE="ghcr.io/${GITHUB_REPOSITORY}:$(date "+%Y-%m")-$(echo "${GITHUB_REF}" | sed -e 's/refs\/heads\///; s/\//-/g')-basic"
+          echo "::set-output name=tag_date::${TAG_DATE}"
 
       - name: Prepare tags for image(basic)
         id: prep_basic
         run: |
+          TAG1="${TAG_DATE}-basic"
           TAG2="ghcr.io/${GITHUB_REPOSITORY}:basic"
           test "${GITHUB_REF}" = "refs/heads/main" \
             && TAGS="${TAG1}%0A${TAG2}" \
             || TAGS="${TAG1}"
           echo "::set-output name=tags::${TAGS}"
         env:
-          TAG1: ${{ steps.prep.outputs.tag1 }}
+          TAG_DATE: ${{ steps.prep.outputs.tag_date }}
 
       - name: Push Image(basic) to GitHub Container Registry
         id: push_image_basic
@@ -53,13 +54,14 @@ jobs:
       - name: Prepare tags for image(docker in docker)
         id: prep_dind
         run: |
+          TAG1="${TAG_DATE}-dind"
           TAG2="ghcr.io/${GITHUB_REPOSITORY}:dind"
           test "${GITHUB_REF}" = "refs/heads/main" \
             && TAGS="${TAG1}%0A${TAG2}" \
             || TAGS="${TAG1}"
           echo "::set-output name=tags::${TAGS}"
         env:
-          TAG1: ${{ steps.prep.outputs.tag1 }}
+          TAG_DATE: ${{ steps.prep.outputs.tag_date }}
 
       - name: Push Image(dind) to GitHub Container Registry
         id: push_image_dind
