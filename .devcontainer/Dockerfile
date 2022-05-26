@@ -1,0 +1,1 @@
+FROM ghcr.io/hankei6km/my-images-codespaces:basic

@@ -1,6 +1,8 @@
 {
   "name": "basic",
-  "image": "docker pull ghcr.io/hankei6km/my-images-codespaces:basic",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
   
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
