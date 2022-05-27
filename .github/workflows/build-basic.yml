@@ -77,7 +77,7 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Prepare tags for image(node)
-        id: prep_dind
+        id: prep_node
         run: |
           TAG1="${TAG_DATE}-node"
           TAG2="ghcr.io/${GITHUB_REPOSITORY}:node"
