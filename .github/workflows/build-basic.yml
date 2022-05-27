@@ -47,9 +47,9 @@ jobs:
           context: ./basic
           push: true
           tags: ${{ steps.prep_basic.outputs.tags }}
-          # https://github.com/docker/build-push-action/blob/master/docs/advanced/cache.md#inline-cache
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:basic
-          cache-to: type=inline
+          # https://github.com/docker/build-push-action/blob/master/docs/advanced/cache.md#github-cache
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Prepare tags for image(docker in docker)
         id: prep_dind
