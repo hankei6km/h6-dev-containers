@@ -1,7 +1,9 @@
 {
   "name": "basic",
-  "image": "ghcr.io/hankei6km/my-images-codespaces:basic",
-  
+  "image": "ghcr.io/hankei6km/my-images-codespaces:dind",
+  "runArgs": ["--init", "--privileged"],
+  "overrideCommand": false,
+
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
   
