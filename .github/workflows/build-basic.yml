@@ -75,3 +75,28 @@ jobs:
           # https://github.com/docker/build-push-action/blob/master/docs/advanced/cache.md#github-cache
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Prepare tags for image(node)
+        id: prep_node
+        run: |
+          TAG1="${TAG_DATE}-node"
+          TAG2="ghcr.io/${GITHUB_REPOSITORY}:node"
+          test "${GITHUB_REF}" = "refs/heads/main" \
+            && TAGS="${TAG1}%0A${TAG2}" \
+            || TAGS="${TAG1}"
+          echo "::set-output name=tags::${TAGS}"
+        env:
+          TAG_DATE: ${{ steps.prep.outputs.tag_date }}
+
+      - name: Push Image(node) to GitHub Container Registry
+        id: push_image_node
+        uses: docker/build-push-action@v3
+        with:
+          context: ./node
+          build-args: |
+            BASIC_IMAGE=ghcr.io/${{ github.repository }}@${{ steps.push_image_basic.outputs.digest}}
+          push: true
+          tags: ${{ steps.prep_dind.outputs.tags }}
+          # https://github.com/docker/build-push-action/blob/master/docs/advanced/cache.md#github-cache
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
