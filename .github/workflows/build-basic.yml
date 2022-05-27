@@ -89,7 +89,7 @@ jobs:
           TAG_DATE: ${{ steps.prep.outputs.tag_date }}
 
       - name: Push Image(node) to GitHub Container Registry
-        id: push_image_dind
+        id: push_image_node
         uses: docker/build-push-action@v3
         with:
           context: ./node
