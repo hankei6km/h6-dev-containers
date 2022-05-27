@@ -1,5 +1,5 @@
 ARG BASIC_IMAGE=ghcr.io/hankei6km/my-images-codespaces:basic
-FROM ${BASIC_IMAGE}
+FROM ${BASIC_IMAGE} as dind
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
