@@ -81,8 +81,8 @@ jobs:
             BASIC_IMAGE=ghcr.io/${{ github.repository }}@${{ steps.push_image_basic.outputs.digest}}
           push: true
           tags: ${{ steps.prep_dind.outputs.tags }}
-          cache-from: type=local,src=/tmp/.buildx-cache/dind
-          cache-to: type=local,dest=/tmp/.buildx-cache-new/dind,mode=max
+          cache-from: "type=registry,ref=ghcr.io/${{ github.repository }}:dind"
+          cache-to: type=inline
 
       - name: Prepare tags for image(node)
         id: prep_node
@@ -105,8 +105,8 @@ jobs:
             BASIC_IMAGE=ghcr.io/${{ github.repository }}@${{ steps.push_image_basic.outputs.digest}}
           push: true
           tags: ${{ steps.prep_dind.outputs.tags }}
-          cache-from: type=local,src=/tmp/.buildx-cache/node
-          cache-to: type=local,dest=/tmp/.buildx-cache-new/node,mode=max
+          cache-from: "type=registry,ref=ghcr.io/${{ github.repository }}:node"
+          cache-to: type=inline
 
       # Temp fix
       # https://github.com/docker/build-push-action/issues/252
