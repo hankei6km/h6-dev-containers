@@ -76,6 +76,7 @@ jobs:
           tags: ${{ steps.prep_dind.outputs.tags }}
           cache-from: |
             type=gha,scope=dind
+            type=gha,scope=basic
           cache-to: |
             type=gha,scope=dind,mode=max
           target: dind
@@ -103,6 +104,7 @@ jobs:
           tags: ${{ steps.prep_dind.outputs.tags }}
           cache-from: |
             type=gha,scope=node
+            type=gha,scope=basic
           cache-to: |
             type=gha,scope=node,mode=max
           target: node
