@@ -129,6 +129,7 @@ jobs:
           tags: ${{ steps.prep_dind.outputs.tags }}
           cache-from: |
             type=local,src=/tmp/.buildx-basic-cache
+            type=local,src=/tmp/.buildx-dind-cache
             type=local,src=/tmp/.buildx-node-cache
           cache-to: |
             type=local,mode=max,dest=/tmp/.buildx-node-cache-new
