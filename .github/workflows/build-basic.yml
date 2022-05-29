@@ -22,6 +22,31 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Get build cache basic
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-basic-cache
+          key: buildx-basic-${{ hashFiles('Dockerfile') }}
+          restore-keys: |
+            buildx-basic-
+
+      - name: Get build cache dind
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-dind-cache
+          key: buildx-dind-${{ hashFiles('Dockerfile') }}
+          restore-keys: |
+            buildx-dind-
+
+      - name: Get build cache node
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-node-cache
+          key: buildx-node-${{ hashFiles('Dockerfile') }}
+          restore-keys: |
+            buildx-node-
+
+
       - name: Prepare tags for image
         id: prep
         run: |
@@ -47,11 +72,10 @@ jobs:
           context: ./basic
           push: true
           tags: ${{ steps.prep_basic.outputs.tags }}
-          # https://github.com/docker/build-push-action/issues/286#issuecomment-892900431
           cache-from: |
-            type=gha,scope=basic
+            type=local,src=/tmp/.buildx-basic-cache
           cache-to: |
-            type=gha,scope=basic,mode=max
+            type=local,mode=max,dest=/tmp/.buildx-basic-cache-new
           target: basic
 
       - name: Prepare tags for image(docker in docker)
@@ -76,10 +100,10 @@ jobs:
           push: true
           tags: ${{ steps.prep_dind.outputs.tags }}
           cache-from: |
-            type=gha,scope=dind
-            type=gha,scope=basic
+            type=local,src=/tmp/.buildx-basic-cache
+            type=local,src=/tmp/.buildx-dind-cache
           cache-to: |
-            type=gha,scope=dind,mode=max
+            type=local,mode=max,dest=/tmp/.buildx-dind-cache-new
           target: dind
 
       - name: Prepare tags for image(node)
@@ -104,8 +128,18 @@ jobs:
           push: true
           tags: ${{ steps.prep_dind.outputs.tags }}
           cache-from: |
-            type=gha,scope=node
-            type=gha,scope=basic
+            type=local,src=/tmp/.buildx-basic-cache
+            type=local,src=/tmp/.buildx-node-cache
           cache-to: |
-            type=gha,scope=node,mode=max
+            type=local,mode=max,dest=/tmp/.buildx-node-cache-new
           target: node
+      -
+        # Temp fix
+        # https://github.com/docker/build-push-action/issues/252
+        # https://github.com/moby/buildkit/issues/1896
+        name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-basic-cache /tmp/.buildx-dind-cache /tmp/.buildx-node-cache
+          mv /tmp/.buildx-basic-cache-new /tmp/.buildx-basic-cache
+          mv /tmp/.buildx-dind-cache-new /tmp/.buildx-dind-cache
+          mv /tmp/.buildx-node-cache-new /tmp/.buildx-node-cache
