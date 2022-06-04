@@ -22,7 +22,6 @@ RUN apt-get update \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/*
 
-USER vscode
 # [Optional] Uncomment if you want to install an additional version of node using nvm
 ARG EXTRA_NODE_VERSION=14
 RUN su "${USERNAME}" -c "source /usr/local/share/nvm/nvm.sh && nvm install ${EXTRA_NODE_VERSION} && nvm use default"
