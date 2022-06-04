@@ -45,6 +45,11 @@ RUN apt-get update \
     ' \
     && apt-get install -y --no-install-recommends  $devToolsPkgs $guiDeps $serverPkgs \
     #
+    # Install up google-drive-ocamlfuse
+    && add-apt-repository -y ppa:alessandro-strada/ppa \
+    && apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get install -y google-drive-ocamlfuse \
+    #
     # Clean up
     && apt-get autoremove -y \
     && apt-get clean -y \
@@ -58,6 +63,9 @@ RUN apt-get update \
 # RUN su node -c "npm install -g <your-package-list -here>"
 # RUN su "${USERNAME}" -c "npm install -g zx guratan"
 
+
+# Prepeare gdfuse to user environment
+COPY --chown="${USERNAME}" --chmod=755 mount-gd.sh "/home/${USERNAME}/mount-gd.sh"
 
 WORKDIR "/home/${USERNAME}"
 USER ${USERNAME}
@@ -83,7 +91,11 @@ RUN mkdir -p "/home/${USERNAME}/.local/share" \
     #&& ranger --copy-config = all \
     && mkdir -p "/home/${USERNAME}/.config/ranger/plugins" \
     && mirage_linemode_ctrl init \
-    && mirage_linemode_ctrl enable
+    && mirage_linemode_ctrl enable \
+    # Mount google drive then start bootstrap code
+    && mkdir -p "/home/${USERNAME}/gdrive" \
+    && test -d "/home/${USERNAME}/.local/bin" || mkdir -p "/home/${USERNAME}/.local/bin" \
+    && mv "/home/${USERNAME}/mount-gd.sh" "/home/${USERNAME}/.local/bin/mount-gd.sh"
 
 COPY mirage_linemode "/home/${USERNAME}/.config"
 
