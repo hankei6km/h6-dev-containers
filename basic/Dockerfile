@@ -6,10 +6,6 @@ FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT} as basic
 
 ARG USERNAME=vscode
 
-ENV NVM_DIR="/usr/local/share/nvm"
-ENV NVM_SYMLINK_CURRENT=true \
-    PATH=${NVM_DIR}/current/bin:${PATH}
-
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # [Optional] Uncomment this section to install additional OS packages.
@@ -49,9 +45,6 @@ RUN apt-get update \
     ' \
     && apt-get install -y --no-install-recommends  $devToolsPkgs $guiDeps $serverPkgs \
     #
-    # install Node.js
-    && bash -c "$(curl -fsSL "https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/script-library/node-debian.sh")" -- "${NVM_DIR}" \
-    #
     # Clean up
     && apt-get autoremove -y \
     && apt-get clean -y \
@@ -72,8 +65,6 @@ COPY vimrc "/home/${USERNAME}/.vimrc"
 
 # Setup user environment
 RUN mkdir -p "/home/${USERNAME}/.local/share" \
-    # Install npm pacakges to global
-    && npm install -g zx guratan \
     # Setup actionlint for user. \
     && mkdir -p "/home/${USERNAME}/.local/bin" \
     && curl -s https://api.github.com/repos/rhysd/actionlint/releases/latest | jq .assets[].browser_download_url | grep linux_amd64 | xargs -I '{}' curl -sL '{}' | tar -zxf - -C "/home/${USERNAME}/.local/bin" actionlint \
