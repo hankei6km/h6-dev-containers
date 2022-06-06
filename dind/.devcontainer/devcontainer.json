@@ -1,0 +1,16 @@
+{
+  "name": "dind",
+  "image": "ghcr.io/hankei6km/h6-dev-containers:dind",
+  "runArgs": ["--init", "--privileged"],
+  "overrideCommand": false,
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [],
+  
+  // Use 'postCreateCommand' to run commands after the container is created.
+  // "postCreateCommand": "uname -a",
+  
+  // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+  "remoteUser": "vscode",
+  "postStartCommand": ["/home/vscode/.local/bin/mount-gd.sh", "/home/vscode/gdrive"]
+}
