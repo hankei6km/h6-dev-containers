@@ -4,6 +4,8 @@
 ARG VARIANT=ubuntu
 FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT} as basic
 
+ENV H6_IMAGE_TYPE=basic
+
 ARG USERNAME=vscode
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
