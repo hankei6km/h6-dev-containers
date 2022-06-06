@@ -1,4 +1,4 @@
-ARG BASIC_IMAGE=ghcr.io/hankei6km/my-images-codespaces:node
+ARG BASIC_IMAGE=ghcr.io/hankei6km/h6-dev-containers:node
 FROM ${BASIC_IMAGE} as clasp
 
 ENV H6_IMAGE_TYPE=clasp
