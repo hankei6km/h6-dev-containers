@@ -1,6 +1,8 @@
 ARG BASIC_IMAGE=ghcr.io/hankei6km/my-images-codespaces:basic
 FROM ${BASIC_IMAGE} as node
 
+ENV H6_IMAGE_TYPE=node
+
 ENV NVM_DIR="/usr/local/share/nvm"
 ENV NVM_SYMLINK_CURRENT=true \
     PATH=${NVM_DIR}/current/bin:${PATH}

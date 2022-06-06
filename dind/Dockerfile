@@ -1,6 +1,8 @@
 ARG BASIC_IMAGE=ghcr.io/hankei6km/my-images-codespaces:basic
 FROM ${BASIC_IMAGE} as dind
 
+ENV H6_IMAGE_TYPE=dind
+
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 USER root
