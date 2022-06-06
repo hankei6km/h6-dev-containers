@@ -1,6 +1,6 @@
 {
   "name": "basic",
-  "image": "ghcr.io/hankei6km/my-images-codespaces:dind",
+  "image": "ghcr.io/hankei6km/h6-dev-containers:dind",
   "runArgs": ["--init", "--privileged"],
   "overrideCommand": false,
 
