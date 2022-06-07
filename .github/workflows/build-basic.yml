@@ -44,7 +44,7 @@ jobs:
         id: push_image_basic
         uses: docker/build-push-action@v3
         with:
-          context: ./basic
+          context: ./basic/image
           push: true
           tags: ${{ steps.prep_basic.outputs.tags }}
           # https://github.com/docker/build-push-action/issues/286#issuecomment-892900431
@@ -70,7 +70,7 @@ jobs:
         id: push_image_dind
         uses: docker/build-push-action@v3
         with:
-          context: ./dind
+          context: ./dind/image
           build-args: |
             BASIC_IMAGE=ghcr.io/${{ github.repository }}@${{ steps.push_image_basic.outputs.digest}}
           push: true
@@ -98,7 +98,7 @@ jobs:
         id: push_image_node
         uses: docker/build-push-action@v3
         with:
-          context: ./node
+          context: ./node/image
           build-args: |
             BASIC_IMAGE=ghcr.io/${{ github.repository }}@${{ steps.push_image_basic.outputs.digest}}
           push: true
@@ -126,7 +126,7 @@ jobs:
         id: push_image_clasp
         uses: docker/build-push-action@v3
         with:
-          context: ./clasp
+          context: ./clasp/image
           build-args: |
             BASIC_IMAGE=ghcr.io/${{ github.repository }}@${{ steps.push_image_node.outputs.digest}}
           push: true
