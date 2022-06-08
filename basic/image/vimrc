@@ -11,6 +11,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-surround.git'
 Plugin 'dense-analysis/ale'
 Plugin 'stephpy/vim-yaml'
 Plugin 'hankei6km/starttig.vim'
