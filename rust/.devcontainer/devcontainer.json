@@ -19,5 +19,10 @@
     "/home/vscode/.local/bin/mount-gd.sh",
     "/home/vscode/gdrive"
   ],
-  "extensions": ["rust-lang.rust-analyzer"]
+  // https://docs.microsoft.com/ja-jp/windows/dev-environment/rust/setup#install-visual-studio-code
+  "extensions": [
+    "rust-lang.rust-analyzer",
+    "vadimcn.vscode-lldb",
+    "bungcip.better-toml"
+  ]
 }
