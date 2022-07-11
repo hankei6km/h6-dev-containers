@@ -155,7 +155,7 @@ jobs:
         with:
           context: ./rust/image
           build-args: |
-            BASIC_IMAGE=ghcr.io/${{ github.repository }}@${{ steps.push_image_node.outputs.digest}}
+            BASIC_IMAGE=ghcr.io/${{ github.repository }}@${{ steps.push_image_dind.outputs.digest}}
           push: true
           tags: ${{ steps.prep_rust.outputs.tags }}
           cache-from: |
