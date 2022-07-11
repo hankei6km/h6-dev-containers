@@ -23,6 +23,6 @@
   "extensions": [
     "rust-lang.rust-analyzer",
     "vadimcn.vscode-lldb",
-    "bungcip.better-toml"
+    "tamasfe.even-better-toml"
   ]
 }
