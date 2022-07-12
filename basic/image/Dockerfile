@@ -70,7 +70,7 @@ RUN apt-get update \
 
 # [Optional] Uncomment if you want to install more global node packages
 # RUN su node -c "npm install -g <your-package-list -here>"
-# RUN su "${USERNAME}" -c "npm install -g zx guratan"
+RUN su "${USERNAME}" -c "npm install -g zx @devcontainers/cli"
 
 
 # Prepeare gdfuse to user environment
