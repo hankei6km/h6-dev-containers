@@ -24,7 +24,7 @@ jobs:
       - name: Prepare tags for image
         id: prep
         run: |
-          TAG_DATE="ghcr.io/${GITHUB_REPOSITORY}:$(date "+%Y-%m")-$(echo "${GITHUB_REF}" | sed -e 's/refs\/heads\///; s/\//-/g')-basic"
+          TAG_DATE="ghcr.io/${GITHUB_REPOSITORY}:$(date "+%Y-%m")-$(echo "${GITHUB_REF}" | sed -e 's/refs\/heads\///; s/\//-/g')"
           echo "::set-output name=tag_date::${TAG_DATE}"
 
       - name: Prepare tags for image(basic)
