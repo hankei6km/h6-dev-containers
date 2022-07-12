@@ -3,7 +3,6 @@ on:
   push:
 
 jobs:
-
   build_node:
     name: Build image
     runs-on: ubuntu-latest
@@ -137,3 +136,31 @@ jobs:
           cache-to: |
             type=gha,scope=clasp,mode=max
           target: clasp
+
+      - name: Prepare tags for image(rust)
+        id: prep_rust
+        run: |
+          TAG1="${TAG_DATE}-rust"
+          TAG2="ghcr.io/${GITHUB_REPOSITORY}:rust"
+          test "${GITHUB_REF}" = "refs/heads/main" \
+            && TAGS="${TAG1}%0A${TAG2}" \
+            || TAGS="${TAG1}"
+          echo "::set-output name=tags::${TAGS}"
+        env:
+          TAG_DATE: ${{ steps.prep.outputs.tag_date }}
+
+      - name: Push Image(rust) to GitHub Container Registry
+        id: push_image_rust
+        uses: docker/build-push-action@v3
+        with:
+          context: ./rust/image
+          build-args: |
+            BASIC_IMAGE=ghcr.io/${{ github.repository }}@${{ steps.push_image_dind.outputs.digest}}
+          push: true
+          tags: ${{ steps.prep_rust.outputs.tags }}
+          cache-from: |
+            type=gha,scope=rust
+            type=gha,scope=basic
+          cache-to: |
+            type=gha,scope=rust,mode=max
+          target: rust
