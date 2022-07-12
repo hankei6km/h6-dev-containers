@@ -181,7 +181,7 @@ jobs:
         id: push_image_cli_rust
         uses: docker/build-push-action@v3
         with:
-          context: ./cli_rust/image
+          context: ./cli-rust/image
           #build-args: |
           #  BASIC_IMAGE=ghcr.io/${{ github.repository }}@${{ steps.push_image_dind.outputs.digest}}
           push: true
