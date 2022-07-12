@@ -27,7 +27,8 @@ RUN apk update \
     # Add windows dependencies
     && apk add --no-cache mingw-w64-gcc \
     # Add emscripten dependencies
-    && apk add --no-cache emscripten-fastcomp \
+    # alpine 3.16 ではパッケージがない.
+    # && apk add --no-cache emscripten-fastcomp \
     # Add apple dependencies
     && apk add --no-cache clang cmake libxml2-dev \
       openssl-dev fts-dev bsd-compat-headers xz
