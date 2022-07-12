@@ -8,6 +8,10 @@ ENV H6_IMAGE_TYPE=basic
 
 ARG USERNAME=vscode
 
+ENV NVM_DIR="/usr/local/share/nvm"
+ENV NVM_SYMLINK_CURRENT=true \
+    PATH=${NVM_DIR}/current/bin:${PATH}
+
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # [Optional] Uncomment this section to install additional OS packages.
@@ -51,6 +55,9 @@ RUN apt-get update \
     && add-apt-repository -y ppa:alessandro-strada/ppa \
     && apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get install -y google-drive-ocamlfuse \
+    #
+    # install Node.js
+    && bash -c "$(curl -fsSL "https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/script-library/node-debian.sh")" -- "${NVM_DIR}" \
     #
     # Clean up
     && apt-get autoremove -y \
