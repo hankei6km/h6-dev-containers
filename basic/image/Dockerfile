@@ -82,6 +82,8 @@ COPY vimrc "/home/${USERNAME}/.vimrc"
 
 # Setup user environment
 RUN mkdir -p "/home/${USERNAME}/.local/share" \
+    # Install npm pacakges to global
+    && npm install -g zx @devcontainers/cli \
     # Setup actionlint for user. \
     && mkdir -p "/home/${USERNAME}/.local/bin" \
     && curl -s https://api.github.com/repos/rhysd/actionlint/releases/latest | jq .assets[].browser_download_url | grep linux_amd64 | xargs -I '{}' curl -sL '{}' | tar -zxf - -C "/home/${USERNAME}/.local/bin" actionlint \
