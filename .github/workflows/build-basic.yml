@@ -164,3 +164,31 @@ jobs:
           cache-to: |
             type=gha,scope=rust,mode=max
           target: rust
+
+      - name: Prepare tags for image(cli-rust)
+        id: prep_cli_rust
+        run: |
+          TAG1="${TAG_DATE}-cli_rust"
+          TAG2="ghcr.io/${GITHUB_REPOSITORY}:cli_rust"
+          test "${GITHUB_REF}" = "refs/heads/main" \
+            && TAGS="${TAG1}%0A${TAG2}" \
+            || TAGS="${TAG1}"
+          echo "::set-output name=tags::${TAGS}"
+        env:
+          TAG_DATE: ${{ steps.prep.outputs.tag_date }}
+
+      - name: Push Image(cli_rust) to GitHub Container Registry
+        id: push_image_cli_rust
+        uses: docker/build-push-action@v3
+        with:
+          context: ./cli_rust/image
+          #build-args: |
+          #  BASIC_IMAGE=ghcr.io/${{ github.repository }}@${{ steps.push_image_dind.outputs.digest}}
+          push: true
+          tags: ${{ steps.prep_cli_rust.outputs.tags }}
+          cache-from: |
+            type=gha,scope=cli_rust
+            type=gha,scope=basic
+          cache-to: |
+            type=gha,scope=cli_rust,mode=max
+          target: cli_rust
