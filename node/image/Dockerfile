@@ -16,13 +16,15 @@ USER root
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
-RUN apt-get update \
-  # install Node.js
-  && bash -c "$(curl -fsSL "https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/script-library/node-debian.sh")" -- "${NVM_DIR}" \
-  # Clean up
-  && apt-get autoremove -y \
-  && apt-get clean -y \
-  && rm -rf /var/lib/apt/lists/*
+
+# Node.js is already installed on basic image.
+# RUN apt-get update \
+#   # install Node.js
+#   && bash -c "$(curl -fsSL "https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/script-library/node-debian.sh")" -- "${NVM_DIR}" \
+#   # Clean up
+#   && apt-get autoremove -y \
+#   && apt-get clean -y \
+#   && rm -rf /var/lib/apt/lists/*
 
 # [Optional] Uncomment if you want to install an additional version of node using nvm
 ARG EXTRA_NODE_VERSION=14
