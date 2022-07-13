@@ -1,6 +1,8 @@
 name: Build image for devcontainer
 on:
   push:
+  schedule:
+    - cron: "45 20 5,15,25 * *"
 
 jobs:
   build_node:
