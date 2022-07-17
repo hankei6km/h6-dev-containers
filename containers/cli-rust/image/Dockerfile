@@ -31,4 +31,6 @@ RUN apk update \
     # && apk add --no-cache emscripten-fastcomp \
     # Add apple dependencies
     && apk add --no-cache clang cmake libxml2-dev \
-      openssl-dev fts-dev bsd-compat-headers xz
+      openssl-dev fts-dev bsd-compat-headers xz \
+    # Add clippy
+    && rustup component add clippy
