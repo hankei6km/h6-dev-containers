@@ -22,6 +22,8 @@ RUN apt-get update \
   # Clean up
   && apt-get autoremove -y \
   && apt-get clean -y \
-  && rm -rf /var/lib/apt/lists/*
+  && rm -rf /var/lib/apt/lists/* \
+  # Add clippy
+  && rustup component add clippy
 
 USER "${USERNAME}"
