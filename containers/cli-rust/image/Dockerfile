@@ -33,4 +33,6 @@ RUN apk update \
     && apk add --no-cache clang cmake libxml2-dev \
       openssl-dev fts-dev bsd-compat-headers xz \
     # Add clippy
-    && rustup component add clippy
+    && rustup component add clippy \
+    # Add cargo-license
+    && cargo install cargo-license
