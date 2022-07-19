@@ -35,6 +35,15 @@ RUN apk update \
     # Add clippy
     && rustup component add clippy
 
+# image 作成時、 root で cargo install するとコンテナ内で user が build するとエラーになる。
+# 理由は不明。
+#
+#   Downloaded cfg-if v1.0.0                                                                                               
+# error: failed to open `/usr/local/cargo/registry/cache/github.com-1ecc6299db9ec823/cfg-if-1.0.0.crate`
+# 
+# Caused by:
+#   Permission denied (os error 13)
+
 USER "${USERNAME}"
 
 RUN cargo install cargo-license
