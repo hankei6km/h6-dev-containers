@@ -27,3 +27,7 @@ RUN apt-get update \
   && rustup component add clippy
 
 USER "${USERNAME}"
+
+# Install tools
+RUN cargo install cargo-bump \
+  && cargo install toml-cli
