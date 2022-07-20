@@ -32,6 +32,9 @@ RUN apk update \
     # Add apple dependencies
     && apk add --no-cache clang cmake libxml2-dev \
       openssl-dev fts-dev bsd-compat-headers xz \
+    # Add windows target and toolchain
+    && rustup target add x86_64-pc-windows-gnu \
+    && rustup toolchain install stable-x86_64-pc-windows-gnu \
     # Add clippy
     && rustup component add clippy
 
