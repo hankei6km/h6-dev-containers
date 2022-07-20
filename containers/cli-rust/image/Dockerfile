@@ -34,7 +34,7 @@ RUN apk update \
       openssl-dev fts-dev bsd-compat-headers xz \
     # Add windows target and toolchain
     && rustup target add x86_64-pc-windows-gnu \
-    && rustup toolchain install stable-x86_64-pc-windows-gnu --force-non-host \
+    && rustup toolchain install stable-x86_64-pc-windows-gnu \
     # Add clippy
     && rustup component add clippy
 
