@@ -2,6 +2,37 @@
 
 # [Choice] Ubuntu version (use ubuntu-22.04 or ubuntu-18.04 on local arm64/Apple Silicon): ubuntu-22.04, ubuntu-20.04, ubuntu-18.04
 ARG VARIANT=ubuntu
+
+FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT} as gh-extension
+
+ARG USERNAME=vscode
+
+ARG GITHUB_TOKEN=""
+RUN apt-get update \
+    && apt-get -y install --no-install-recommends apt-utils dialog wget ca-certificates software-properties-common 2>&1 \
+    # add github cli repo
+    # && apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0 \
+    # && apt-add-repository https://cli.github.com/packages \
+    && curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+    && apt-get update \
+
+    && export devToolsPkgs=' \
+      gh \
+    ' \
+    && apt-get install -y --no-install-recommends  $devToolsPkgs $guiDeps $serverPkgs \
+    #
+    # Clean up
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR "/home/${USERNAME}"
+USER ${USERNAME}
+
+RUN gh extension install actions/gh-actions-cache
+
+
 FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT} as basic
 
 ENV H6_IMAGE_TYPE=basic
@@ -106,8 +137,11 @@ RUN mkdir -p "/home/${USERNAME}/.local/share" \
     # Mount google drive then start bootstrap code
     && mkdir -p "/home/${USERNAME}/gdrive" \
     && test -d "/home/${USERNAME}/.local/bin" || mkdir -p "/home/${USERNAME}/.local/bin" \
-    && mv "/home/${USERNAME}/mount-gd.sh" "/home/${USERNAME}/.local/bin/mount-gd.sh"
+    && mv "/home/${USERNAME}/mount-gd.sh" "/home/${USERNAME}/.local/bin/mount-gd.sh" \
+    # Prepare to copy from GitHubCLI extentkions
+    && mkdir -p "/home/${USERNAME}/.local/share/gh"
 
+COPY --from=gh-extension "/home/${USERNAME}/.local/share/gh/extensions" "/home/${USERNAME}/.local/share/gh/extensions"
 COPY mirage_linemode "/home/${USERNAME}/.config"
 
 # USER root
