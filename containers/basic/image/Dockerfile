@@ -87,6 +87,9 @@ RUN mkdir -p "/home/${USERNAME}/.local/share" \
     # Setup actionlint for user. \
     && mkdir -p "/home/${USERNAME}/.local/bin" \
     && curl -s https://api.github.com/repos/rhysd/actionlint/releases/latest | jq .assets[].browser_download_url | grep linux_amd64 | xargs -I '{}' curl -sL '{}' | tar -zxf - -C "/home/${USERNAME}/.local/bin" actionlint \
+    # Setup GitHub CLI extension
+    && gh extension install actions/gh-actions-cache \
+    && gh extension list\
     # Setup vim for user. \
     && mkdir -p "/home/${USERNAME}/.vim" \
     && git clone https://github.com/VundleVim/Vundle.vim.git /home/${USERNAME}/.vim/bundle/Vundle.vim \
