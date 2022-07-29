@@ -30,8 +30,7 @@ RUN apt-get update \
 WORKDIR "/home/${USERNAME}"
 USER ${USERNAME}
 
-RUN gh extension install actions/gh-actions-cache \
-    && ls  -a
+RUN gh extension install actions/gh-actions-cache
 
 
 FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT} as basic
