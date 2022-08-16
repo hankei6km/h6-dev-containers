@@ -17,7 +17,7 @@ USER root
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
 RUN apt-get update \
-  && apt-get -y install --no-install-recommends pkg-config libssl-dev
+  && apt-get -y install --no-install-recommends pkg-config libssl-dev \
   # install Rust
   && bash -c "$(curl -fsSL "https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/script-library/rust-debian.sh")" -- "${CARGO_HOME}" "${RUSTUP_HOME}" \
   # Clean up
