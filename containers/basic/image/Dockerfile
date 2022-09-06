@@ -9,17 +9,13 @@ ARG USERNAME=vscode
 
 ARG GITHUB_TOKEN=""
 RUN apt-get update \
-    && apt-get -y install --no-install-recommends apt-utils dialog wget ca-certificates software-properties-common 2>&1 \
-    # add github cli repo
-    # && apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0 \
-    # && apt-add-repository https://cli.github.com/packages \
-    && curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+    && apt-get -y install --no-install-recommends apt-utils dialog curl ca-certificates software-properties-common 2>&1 \
     && apt-get update \
-
-    && export devToolsPkgs=' \
-      gh \
-    ' \
+    # https://github.com/cli/cli/issues/6175#issuecomment-1235984381
+    # Install GihHub CLI
+    && curl -s https://api.github.com/repos/cli/cli/releases/latest | jq .assets[].browser_download_url | grep linux_amd64.deb | xargs -I '{}' curl -sL -o /tmp/ghcli.deb '{}' \
+    && dpkg -i /tmp/ghcli.deb \
+    && rm /tmp/ghcli.deb \
     && apt-get install -y --no-install-recommends  $devToolsPkgs $guiDeps $serverPkgs \
     #
     # Clean up
@@ -50,11 +46,6 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
 RUN apt-get update \
     && apt-get -y install --no-install-recommends apt-utils dialog wget ca-certificates software-properties-common 2>&1 \
-    # add github cli repo
-    # && apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0 \
-    # && apt-add-repository https://cli.github.com/packages \
-    && curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
     && apt-get update \
     #
     # Install dev tools(editor, dvcs, etc) into global environment.
@@ -64,7 +55,6 @@ RUN apt-get update \
       curl \
       libimage-exiftool-perl \
       file \
-      gh \
       git \
       iputils-ping \
       netbase \
@@ -86,6 +76,11 @@ RUN apt-get update \
     && add-apt-repository -y ppa:alessandro-strada/ppa \
     && apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get install -y google-drive-ocamlfuse \
+    # https://github.com/cli/cli/issues/6175#issuecomment-1235984381
+    # Install GihHub CLI
+    && curl -s https://api.github.com/repos/cli/cli/releases/latest | jq .assets[].browser_download_url | grep linux_amd64.deb | xargs -I '{}' curl -sL -o /tmp/ghcli.deb '{}' \
+    && dpkg -i /tmp/ghcli.deb \
+    && rm /tmp/ghcli.deb \
     #
     # install Node.js
     && bash -c "$(curl -fsSL "https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/script-library/node-debian.sh")" -- "${NVM_DIR}" \
