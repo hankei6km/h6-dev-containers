@@ -196,3 +196,31 @@ jobs:
           cache-to: |
             type=gha,scope=cli_rust,mode=max
           target: cli_rust
+
+      - name: Prepare tags for image(python)
+        id: prep_python
+        run: |
+          TAG1="${TAG_DATE}-python"
+          TAG2="ghcr.io/${GITHUB_REPOSITORY}:python"
+          test "${GITHUB_REF}" = "refs/heads/main" \
+            && TAGS="${TAG1}%0A${TAG2}" \
+            || TAGS="${TAG1}"
+          echo "::set-output name=tags::${TAGS}"
+        env:
+          TAG_DATE: ${{ steps.prep.outputs.tag_date }}
+
+      - name: Push Image(python) to GitHub Container Registry
+        id: push_image_python
+        uses: docker/build-push-action@v3
+        with:
+          context: ./containers/python/image
+          build-args: |
+            BASIC_IMAGE=ghcr.io/${{ github.repository }}@${{ steps.push_image_dind.outputs.digest}}
+          push: true
+          tags: ${{ steps.prep_python.outputs.tags }}
+          cache-from: |
+            type=gha,scope=python
+            type=gha,scope=basic
+          cache-to: |
+            type=gha,scope=python,mode=max
+          target: python
