@@ -103,7 +103,7 @@ jobs:
         with:
           context: ./containers/node/image
           build-args: |
-            BASIC_IMAGE=ghcr.io/${{ github.repository }}@${{ steps.push_image_basic.outputs.digest}}
+            BASIC_IMAGE=ghcr.io/${{ github.repository }}@${{ steps.push_image_dind.outputs.digest}}
           push: true
           tags: ${{ steps.prep_node.outputs.tags }}
           cache-from: |
