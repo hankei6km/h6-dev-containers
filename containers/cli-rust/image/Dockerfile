@@ -9,14 +9,20 @@ SHELL ["/bin/ash", "-o", "pipefail", "-c"]
 ARG INSTALL_ZSH="false"
 
 # Install needed packages and setup non-root user. Use a separate RUN statement to add your own dependencies.
-ARG USERNAME=vscode
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+ARG DEFAULT_USERNAME=vscode
+ARG DEFAULT_USER_UID=1000
+ARG DEFAULT_USER_GID=$DEFAULT_USER_UID
+
+ARG RUNNER_USERNAME=runner
+ARG RUNNER_USER_UID=1001
+ARG RUNNER_USER_GID=$RUNNER_USER_UID
+
 RUN apk update \
     && mkdir -p /tmp/library-scripts \
     && cd /tmp/library-scripts \
     && wget "https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/script-library/common-alpine.sh" \
-    && ash common-alpine.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" \
+    && ash common-alpine.sh "${INSTALL_ZSH}" "${DEFAULT_USERNAME}" "${DEFAULT_USER_UID}" "${DEFAULT_USER_GID}" \
+    && ash common-alpine.sh "${INSTALL_ZSH}" "${RUNNER_USERNAME}" "${RUNNER_USER_UID}" "${RUNNER_USER_GID}" \
     && rm -rf /tmp/library-scripts
 
 # ** [Optional] Uncomment this section to install additional packages. **
@@ -49,7 +55,7 @@ RUN apk update \
 # # Caused by:
 # #   Permission denied (os error 13)
 # 
-# USER "${USERNAME}"
+# USER "${DEFAULT_USERNAME}"
 # 
 # RUN cargo install cargo-license
 # 
