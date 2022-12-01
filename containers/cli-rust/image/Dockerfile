@@ -10,7 +10,7 @@ ARG INSTALL_ZSH="false"
 
 # Install needed packages and setup non-root user. Use a separate RUN statement to add your own dependencies.
 ARG USERNAME=vscode
-ARG USER_UID=1000
+ARG USER_UID=1001
 ARG USER_GID=$USER_UID
 RUN apk update \
     && mkdir -p /tmp/library-scripts \
