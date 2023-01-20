@@ -1,9 +1,8 @@
-# https://github.com/microsoft/vscode-dev-containers/tree/main/containers/debian
+# https://github.com/devcontainers/images/tree/main/src/base-ubuntu
 
-# [Choice] Ubuntu version (use ubuntu-22.04 or ubuntu-18.04 on local arm64/Apple Silicon): ubuntu-22.04, ubuntu-20.04, ubuntu-18.04
 ARG VARIANT=ubuntu
 
-FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT} as gh-extension
+FROM mcr.microsoft.com/devcontainers/base:${VARIANT} as gh-extension
 
 ARG USERNAME=vscode
 
@@ -29,7 +28,7 @@ USER ${USERNAME}
 RUN gh extension install actions/gh-actions-cache
 
 
-FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT} as basic
+FROM mcr.microsoft.com/devcontainers/base:${VARIANT} as basic
 
 ENV H6_IMAGE_TYPE=basic
 
