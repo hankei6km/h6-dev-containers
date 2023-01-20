@@ -28,7 +28,7 @@ USER ${USERNAME}
 RUN gh extension install actions/gh-actions-cache
 
 
-FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT} as basic
+FROM mcr.microsoft.com/devcontainers/base:${VARIANT} as basic
 
 ENV H6_IMAGE_TYPE=basic
 
