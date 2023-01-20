@@ -54,7 +54,7 @@ RUN apt-get update \
       curl \
       libimage-exiftool-perl \
       file \
-      git \
+      # git \
       iputils-ping \
       netbase \
       net-tools\
@@ -70,6 +70,9 @@ RUN apt-get update \
       w3m \
     ' \
     && apt-get install -y --no-install-recommends  $devToolsPkgs $guiDeps $serverPkgs \
+    # Isntall git latest by using feature
+    # (Featrure を使ってのイメージビルドはまだ対応していあいので、install.sh を直接利用している)
+    && VERSION=latest bash -c "$(curl -fsSL "https://github.com/devcontainers/features/raw/main/src/git/install.sh")" -- \
     #
     # Install up google-drive-ocamlfuse
     && add-apt-repository -y ppa:alessandro-strada/ppa \
