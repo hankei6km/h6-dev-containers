@@ -1,0 +1,42 @@
+{
+  "build": {
+    "dockerfile": "./Dockerfile",
+    "context": "."
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": "false",
+      "installOhMyZsh": "false",
+      "username": "devcontainer",
+      "userUid": "1000",
+      "userGid": "1000",
+      "upgradePackages": "true"
+    },
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest",
+      "ppa": "false"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers-extra/features/shfmt:1": {}
+    // git を必要とするが git feature を前提としていない。feature のインストール順によってエラーとなる。
+    // "ghcr.io/devcontainers-extra/features/actionlint:1": {}
+  },
+  // "userEnvProbe": "loginShell",
+  // "remoteEnv": {
+  //   "GH_TOKEN": "${localEnv:GH_TOKEN}"
+  // },
+  "remoteUser": "devcontainer",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rogalmic.bash-debug",
+        "mads-hartmann.bash-ide-vscode",
+        "github.vscode-github-actions",
+        "GitHub.vscode-pull-request-github"
+      ],
+      "settings": {
+        "editor.formatOnSave": true
+      }
+    }
+  }
+}

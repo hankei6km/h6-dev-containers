@@ -1,0 +1,15 @@
+{
+  "build": {
+    "dockerfile": "./Dockerfile",
+    "context": ".",
+    "args": {
+      "BASE_REPO": "ghcr.io/hankei6km/h6-dev-containers",
+      "BASE_TAG_SUFFIX": "latest"
+    }
+  },
+  "features": {
+    "ghcr.io/hankei6km/h6-devcontainers-features/google-clasp:1": {}
+  },
+  "remoteUser": "devcontainer",
+  "customizations": {}
+}
