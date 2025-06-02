@@ -1,0 +1,19 @@
+{
+  "build": {
+    "dockerfile": "./Dockerfile",
+    "context": ".",
+    "args": {
+      "BASE_REPO": "ghcr.io/hankei6km/h6-dev-containers",
+      "BASE_TAG_SUFFIX": "latest"
+    }
+  },
+  "remoteUser": "devcontainer",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint"
+      ],
+      "settings": {}
+    }
+  }
+}

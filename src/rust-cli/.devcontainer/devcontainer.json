@@ -1,0 +1,21 @@
+{
+    "build": {
+        "dockerfile": "./Dockerfile",
+        "context": "."
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:2": {
+            "installZsh": "false",
+            "installOhMyZsh": "false",
+            "username": "devcontainer",
+            "userUid": "1000",
+            "userGid": "1000",
+            "upgradePackages": "true"
+        }
+    },
+    // "userEnvProbe": "loginShell",
+    // "remoteEnv": {
+    //   "GH_TOKEN": "${localEnv:GH_TOKEN}"
+    // },
+    "remoteUser": "devcontainer"
+}

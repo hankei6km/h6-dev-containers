@@ -1,0 +1,159 @@
+name: Build and Push Dev Container Image
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - "main"
+    tags:
+      - "!v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+
+      - name: Install Dev Container CLI and strip-json-comments-cli
+        run: |
+          npm install -g @devcontainers/cli strip-json-comments-cli
+
+      - name: Build and Push Variant
+        run: |
+          source ./scripts/util.sh
+          BRANCH_NAME="$(branch_name "${GITHUB_HEAD_REF}")"
+          BRANCH_DATE_TAG="$(cache_tag "${BRANCH_NAME}" "$(date +%Y-%m-%d)")"
+          for VARIANT in ${VARIANTS}; do
+            echo "::group::Building and pushing variant: ${VARIANT}"
+            CACHE_REPO="$(cache_repo "${REPO_NAME}")"
+            CACHE_TAG_BRANCH_DATE="$(cache_tag "${VARIANT}" "${BRANCH_DATE_TAG}")"
+            CACHE_TAG_LATEST="$(cache_tag "${VARIANT}")"
+            ./scripts/image_build.sh \
+              --repo "${REPO_NAME}" \
+              --tag "${BRANCH_DATE_TAG}" \
+              --platform "${PLATFORM}" \
+              --push "true" \
+              --cache-to "type=registry,ref=${CACHE_REPO}:${CACHE_TAG_BRANCH_DATE},mode=max" \
+              --cache-from "type=registry,ref=${CACHE_REPO}:${CACHE_TAG_BRANCH_DATE}" \
+              --cache-from "type=registry,ref=${CACHE_REPO}:${CACHE_TAG_LATEST}" \
+              --base-tag-suffix "${BRANCH_DATE_TAG}" \
+              --user "${GITHUB_ACTOR}" \
+              -- \
+              "${VARIANT}"
+              if [[ "${IS_MAIN_BRANCH}" == "true" ]]; then \
+                ./scripts/image_build.sh \
+                  --repo "${REPO_NAME}" \
+                  --tag "latest" \
+                  --platform "${PLATFORM}" \
+                  --push "true" \
+                  --cache-to "type=registry,ref=${CACHE_REPO}:${CACHE_TAG_LATEST},mode=max" \
+                  --cache-from "type=registry,ref=${CACHE_REPO}:${CACHE_TAG_BRANCH_DATE}" \
+                  --cache-from "type=registry,ref=${CACHE_REPO}:${CACHE_TAG_LATEST}" \
+                  --base-tag-suffix "${BRANCH_DATE_TAG}" \
+                  --user "${GITHUB_ACTOR}" \
+                  -- \
+                  "${VARIANT}"
+              fi
+            echo "::endgroup::"
+          done
+        env:
+          VARIANTS: "basic dind node typescript-node clasp rust-base rust rust-cli"
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          REPO_NAME: ${{ github.repository }}
+          GITHUB_REF: ${{ github.ref }}
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
+          PLATFORM: "linux/amd64,linux/arm64"
+          IS_MAIN_BRANCH: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: read
+
+    strategy:
+      matrix:
+        platform: ["linux/amd64", "linux/arm64"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+
+      - name: Install Dev Container CLI and strip-json-comments-cli
+        run: |
+          npm install -g @devcontainers/cli strip-json-comments-cli
+
+      - name: Test Variant
+        run: |
+          source ./scripts/util.sh
+          BRANCH_NAME="$(branch_name "${GITHUB_HEAD_REF}")"
+          BRANCH_DATE_TAG="$(cache_tag "${BRANCH_NAME}" "$(date +%Y-%m-%d)")"
+          for VARIANT in ${VARIANTS}; do
+            echo "::group::Testing variant: ${VARIANT}"
+            CACHE_REPO="$(cache_repo "${REPO_NAME}")"
+            CACHE_TAG_BRANCH_DATE="$(cache_tag "${VARIANT}" "${BRANCH_DATE_TAG}")"
+            CACHE_TAG_LATEST="$(cache_tag "${VARIANT}")"
+            ./scripts/test_devcontainer.sh \
+              --repo "${REPO_NAME}" \
+              --tag "${BRANCH_DATE_TAG}" \
+              --cache-from "type=registry,ref=${CACHE_REPO}:${CACHE_TAG_BRANCH_DATE}" \
+              --cache-from "type=registry,ref=${CACHE_REPO}:${CACHE_TAG_LATEST}" \
+              --base-tag-suffix "${BRANCH_DATE_TAG}" \
+              --user "${GITHUB_ACTOR}" \
+              -- \
+              "${VARIANT}"
+              if [[ "${IS_MAIN_BRANCH}" == "true" ]]; then \
+                ./scripts/test_devcontainer.sh \
+                  --repo "${REPO_NAME}" \
+                  --tag "latest" \
+                  --cache-from "type=registry,ref=${CACHE_REPO}:${CACHE_TAG_BRANCH_DATE}" \
+                  --cache-from "type=registry,ref=${CACHE_REPO}:${CACHE_TAG_LATEST}" \
+                  --base-tag-suffix "${BRANCH_DATE_TAG}" \
+                  --user "${GITHUB_ACTOR}" \
+                  -- \
+                  "${VARIANT}"
+              fi
+            echo "::endgroup::"
+          done
+        env:
+          DOCKER_DEFAULT_PLATFORM: ${{ matrix.platform }}
+          VARIANTS: "basic dind node typescript-node clasp rust-base rust rust-cli"
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          REPO_NAME: ${{ github.repository }}
+          GITHUB_REF: ${{ github.ref }}
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
+          PLATFORM: "linux/amd64,linux/arm64"
+          IS_MAIN_BRANCH: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}

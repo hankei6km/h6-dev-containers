@@ -1,0 +1,35 @@
+{
+  "build": {
+    "dockerfile": "./Dockerfile",
+    "context": ".",
+    "args": {
+      "BASE_REPO": "ghcr.io/hankei6km/h6-dev-containers",
+      "BASE_TAG_SUFFIX": "latest"
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      // true だと bulidx で qemu を使った linumx/arm64 用ビルドがエラーになる(GPGキーを取得できない).
+      // とりあえず false にしておくが、ビルドできるようになったら戻したい.
+      "moby": false
+    }
+  },
+  "remoteUser": "devcontainer",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-containers"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "[jsonc]": {
+          "editor.defaultFormatter": "vscode.json-language-features",
+          "editor.tabSize": 2
+        },
+        "[dockerfile]": {
+          "editor.defaultFormatter": "ms-azuretools.vscode-containers"
+        }
+      }
+    }
+  }
+}

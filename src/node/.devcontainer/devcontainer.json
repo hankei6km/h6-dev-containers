@@ -1,0 +1,41 @@
+{
+  "build": {
+    "dockerfile": "./Dockerfile",
+    "context": ".",
+    "args": {
+      "BASE_REPO": "ghcr.io/hankei6km/h6-dev-containers",
+      "BASE_TAG_SUFFIX": "latest"
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {}
+  },
+  "remoteUser": "devcontainer",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "[typescript]": {
+          "editor.defaultFormatter": "vscode.typescript-language-features"
+        },
+        "[html]": {
+          "editor.defaultFormatter": "vscode.html-language-features"
+        },
+        "[json]": {
+          "editor.defaultFormatter": "vscode.typescript-language-features",
+          "editor.tabSize": 2
+        },
+        "[jsonc]": {
+          "editor.defaultFormatter": "vscode.typescript-language-features",
+          "editor.tabSize": 2
+        }
+        /*"[javascript]": {
+          "editor.defaultFormatter": "vscode.typescript-language-features"
+        }*/
+      }
+    }
+  }
+}
