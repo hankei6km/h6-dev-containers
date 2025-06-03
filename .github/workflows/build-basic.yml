@@ -44,7 +44,7 @@ jobs:
 
       - name: Push Image(basic) to GitHub Container Registry
         id: push_image_basic
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           context: ./containers/basic/image
           build-args: |
@@ -72,7 +72,7 @@ jobs:
 
       - name: Push Image(dind) to GitHub Container Registry
         id: push_image_dind
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           context: ./containers/dind/image
           build-args: |
@@ -100,7 +100,7 @@ jobs:
 
       - name: Push Image(node) to GitHub Container Registry
         id: push_image_node
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           context: ./containers/node/image
           build-args: |
@@ -128,7 +128,7 @@ jobs:
 
       - name: Push Image(clasp) to GitHub Container Registry
         id: push_image_clasp
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           context: ./containers/clasp/image
           build-args: |
@@ -156,7 +156,7 @@ jobs:
 
       - name: Push Image(rust) to GitHub Container Registry
         id: push_image_rust
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           context: ./containers/rust/image
           build-args: |
@@ -184,7 +184,7 @@ jobs:
 
       - name: Push Image(cli_rust) to GitHub Container Registry
         id: push_image_cli_rust
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           context: ./containers/cli-rust/image
           #build-args: |
@@ -212,7 +212,7 @@ jobs:
 
       - name: Push Image(python) to GitHub Container Registry
         id: push_image_python
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           context: ./containers/python/image
           build-args: |
@@ -240,7 +240,7 @@ jobs:
 
       - name: Push Image(gcloud-pubsub-emu) to GitHub Container Registry
         id: push_image_gcloud-pubsub-emu
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           context: ./containers/gcloud-pubsub-emu/image
           build-args: |
