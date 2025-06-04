@@ -3,6 +3,8 @@ name: Build and Push Dev Container Image
 on:
   workflow_dispatch:
   pull_request:
+  schedule:
+    - cron: "45 20 5,15,25 * *"
   push:
     branches:
       - "main"
