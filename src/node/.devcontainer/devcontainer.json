@@ -25,11 +25,11 @@
           "editor.defaultFormatter": "vscode.html-language-features"
         },
         "[json]": {
-          "editor.defaultFormatter": "vscode.typescript-language-features",
+          "editor.defaultFormatter": "vscode.json-language-features",
           "editor.tabSize": 2
         },
         "[jsonc]": {
-          "editor.defaultFormatter": "vscode.typescript-language-features",
+          "editor.defaultFormatter": "vscode.json-language-features",
           "editor.tabSize": 2
         }
         /*"[javascript]": {
