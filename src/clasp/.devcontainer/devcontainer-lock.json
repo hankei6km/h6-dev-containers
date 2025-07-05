@@ -1,0 +1,9 @@
+{
+  "features": {
+    "ghcr.io/hankei6km/h6-devcontainers-features/google-clasp:1": {
+      "version": "1.0.3",
+      "resolved": "ghcr.io/hankei6km/h6-devcontainers-features/google-clasp@sha256:2ea547c3b85f2824c1377ea770efbf642f2ab3f0d04ce4b0fbd2ffe49bef98a5",
+      "integrity": "sha256:2ea547c3b85f2824c1377ea770efbf642f2ab3f0d04ce4b0fbd2ffe49bef98a5"
+    }
+  }
+}
