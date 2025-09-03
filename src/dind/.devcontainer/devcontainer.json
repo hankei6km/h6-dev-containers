@@ -8,7 +8,7 @@
     }
   },
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+    "ghcr.io/devcontainers/features/docker-in-docker:": {
       // true だと bulidx で qemu を使った linumx/arm64 用ビルドがエラーになる(GPGキーを取得できない).
       // とりあえず false にしておくが、ビルドできるようになったら戻したい.
       "moby": false
