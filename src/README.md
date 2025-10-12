@@ -68,9 +68,9 @@ export GH_TOKEN="<GHCR TOKEN>"
 ./scripts/image_build.sh --user "<USER>" --repo "<REPO>" --tag test --platform linux/amd64,linux/arm64 --push true basic
 ```
 
-### ロックファイル
+### ロックファイルの確認
 
-以下のように手動でコマンドを実行し作成する(これが正規の方法であるかは不明)。
+features を利用している場合、以下のように手動でコマンドを実行すると作成される(これが正規の方法であるかは不明)。
 
 ```sh
 devcontainer upgrade \
@@ -102,7 +102,6 @@ DOCKER_DEFAULT_PLATFORM=linux/amd64 ./scripts/test_devcontainer.sh --user "<USER
 ./scripts/image_build.sh --user "hankei6km" --repo "hankei6km/h6-dev-containers" --tag test --platform linux/amd64 --cache-from "type=registry,ref=ghcr.io/hankei6km/h6-dev-containers/cache:basic_latest" basic
  ```
 
-
 ## パッケージ
 
 以下のパッケージ(リポジトリ)を作成し利用する。
@@ -114,14 +113,12 @@ DOCKER_DEFAULT_PLATFORM=linux/amd64 ./scripts/test_devcontainer.sh --user "<USER
 
 ローカルでビルドスクリプトを実行しプッシュした場合でも作成されるが、この場合はリポジトリとの関連付けが行われないので、GitHub Actions(リポジトリ)へのアクセスを追加する必要がある。
 
-
 > [!NOTE]
 > 前述のようにイメージへのラベルは設定されないので、各イメージがパッケージ(リポジトリ)を指すためのメタ情報は常に含まれない。
 
-
 ## 新しい Variant を追加
 
-以下の手順で追加することでワークフローによるビルドとテスト、dependabot による featuresの更新が行われる。
+以下の手順で追加することでワークフローによるビルドとテスト、dependabot による features の更新が行われる。
 
 `foo` variant を追加する場合。
 
@@ -146,7 +143,7 @@ export GH_TOKEN="<GHCR TOKEN>"
 DOCKER_DEFAULT_PLATFORM=linux/amd64 ./scripts/test_devcontainer.sh --user "<USER>" --repo "<REPO>" --tag test foo
 ```
 
-### ロックファイル
+### ロックファイルを準備
 
 必要であれば(Feature を利用している場合)、以下のようにロックファイルを作成する。
 
@@ -168,7 +165,6 @@ devcontainer upgrade \
 > [!NOTE]
 > 追加するとき、継承関係にある Variant があればその後ろに追加する。
 
-
 ### dependabot 設定へ追加
 
 `.github/dependabot.yml` へ以下のように設定を追加する。
@@ -183,6 +179,3 @@ devcontainer upgrade \
 ## プッシュ先を設定
 
 イメージ、キャッシュをプッシュするリポジトリやタグなどを変更するような場合、`scripts/util.sh` 内の各関数を変更する。
-
-
-
