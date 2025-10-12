@@ -29,6 +29,7 @@
   "customizations": {
     "vscode": {
       "extensions": [
+        "DavidAnson.vscode-markdownlint",
         "rogalmic.bash-debug",
         "mads-hartmann.bash-ide-vscode",
         "github.vscode-github-actions",
