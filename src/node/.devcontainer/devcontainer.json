@@ -18,10 +18,8 @@
       ],
       "settings": {
         "editor.formatOnSave": true,
-        "javascript.format.semicolons": "remove",
-        "typescript.format.semicolons": "remove",
-        "javascript.preferences.quoteStyle": "single",
-        "typescript.preferences.quoteStyle": "single",
+        "js/ts.format.semicolons": "remove",
+        "js/ts.preferences.quoteStyle": "single",
         "[typescript]": {
           "editor.defaultFormatter": "vscode.typescript-language-features"
         },
